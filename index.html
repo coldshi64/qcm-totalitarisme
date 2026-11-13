@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>:root{color-scheme:light}body{margin:0}</style>
+<title>QCM Totalitarismes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: une colonne étroite façon cahier, trois écrans (réglages, question, résultat) */
+:root {
+  --bg: #eef1f4;
+  --rule: #e1e7ec;
+  --surface: #ffffff;
+  --fg: #17212b;
+  --muted: #566574;
+  --line: #d0d9e1;
+  --accent: #1d5f8a;
+  --accent-ink: #ffffff;
+  --accent-soft: #dbe9f3;
+  --good: #1b7448;
+  --good-soft: #dff2e8;
+  --bad: #ae352d;
+  --bad-soft: #f9e2df;
+  --font-display: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f161d;
+    --rule: #16212b;
+    --surface: #17212b;
+    --fg: #e7edf2;
+    --muted: #9aabba;
+    --line: #2b3947;
+    --accent: #6db3e0;
+    --accent-ink: #0c1a24;
+    --accent-soft: #1d3446;
+    --good: #58c58a;
+    --good-soft: #15352a;
+    --bad: #f08077;
+    --bad-soft: #3b1f1d;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f161d;
+  --rule: #16212b;
+  --surface: #17212b;
+  --fg: #e7edf2;
+  --muted: #9aabba;
+  --line: #2b3947;
+  --accent: #6db3e0;
+  --accent-ink: #0c1a24;
+  --accent-soft: #1d3446;
+  --good: #58c58a;
+  --good-soft: #15352a;
+  --bad: #f08077;
+  --bad-soft: #3b1f1d;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background-color: var(--bg);
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 31px, var(--rule) 31px, var(--rule) 32px);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+}
+.wrap {
+  max-width: 700px;
+  margin: 0 auto;
+  padding-block: 24px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 7vw, 2.8rem); line-height: 1.05; letter-spacing: -0.01em; }
+h2 { font-size: 1.25rem; line-height: 1.3; }
+p { margin: 0; }
+.eyebrow { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+.lead { color: var(--muted); max-width: 60ch; }
+.hero { display: flex; flex-direction: column; gap: 10px; }
+.stack { display: flex; flex-direction: column; gap: 28px; }
+
+.tl { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(104px, 1fr)); gap: 12px; }
+.tl li { border-top: 2px solid var(--accent); padding-top: 8px; display: flex; flex-direction: column; min-width: 0; }
+.tl b { font-family: var(--font-display); font-size: 1.15rem; font-variant-numeric: tabular-nums; }
+.tl span { font-size: 0.82rem; color: var(--muted); }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 22px; }
+.group { display: flex; flex-direction: column; gap: 10px; }
+.group > .label { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { position: relative; }
+.chip input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.chip span { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-size: 0.93rem; }
+.chip small { color: var(--muted); font-variant-numeric: tabular-nums; }
+.chip input:checked + span { background: var(--accent-soft); border-color: var(--accent); font-weight: 500; }
+.chip input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.primary { background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 10px; min-height: 48px; padding: 10px 20px; font-weight: 600; }
+.primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.secondary { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; min-height: 48px; padding: 10px 20px; font-weight: 500; }
+.link { background: none; border: 0; color: var(--accent); padding: 8px 0; min-height: 40px; font-weight: 500; }
+
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 0.9rem; font-variant-numeric: tabular-nums; color: var(--muted); }
+.bar { height: 6px; background: var(--line); border-radius: 999px; overflow: hidden; margin-block: 4px 18px; }
+.bar span { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.tag { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+.opts { display: flex; flex-direction: column; gap: 10px; }
+.opt { display: grid; grid-template-columns: 28px 1fr; align-items: start; gap: 10px; text-align: left; width: 100%; min-height: 52px; padding: 12px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.opt .key { font-family: var(--font-display); font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+.opt .mark { display: block; margin-top: 2px; font-size: 0.8rem; font-weight: 600; }
+.opt:not(:disabled):hover { border-color: var(--accent); background: var(--accent-soft); }
+.opt:disabled { cursor: default; }
+.opt.good { border-color: var(--good); background: var(--good-soft); }
+.opt.good .mark { color: var(--good); }
+.opt.bad { border-color: var(--bad); background: var(--bad-soft); }
+.opt.bad .mark { color: var(--bad); }
+.opt.dim { opacity: 0.6; }
+.fb { display: flex; flex-direction: column; gap: 12px; border-top: 1px solid var(--line); padding-top: 16px; }
+.fb .verdict { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; }
+.fb .verdict.good { color: var(--good); }
+.fb .verdict.bad { color: var(--bad); }
+.fb .primary { align-self: flex-start; }
+
+.big { font-family: var(--font-display); font-weight: 700; font-size: clamp(3rem, 14vw, 4.5rem); line-height: 1; font-variant-numeric: tabular-nums; }
+.big small { font-size: 0.4em; color: var(--muted); font-weight: 500; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.errors { display: flex; flex-direction: column; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.errors li { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.errors .q { font-weight: 600; }
+.errors .a { color: var(--good); font-weight: 600; font-size: 0.93rem; }
+.errors .e { color: var(--muted); font-size: 0.9rem; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .bar span { transition: width 0.25s ease; }
+  .opt, .chip span { transition: background-color 0.12s, border-color 0.12s; }
+}
+</style>
+
+<div class="wrap"><div id="app"></div></div>
+
+<script>
+(function () {
+  var CATS = {
+    commun: 'Caractéristiques communes',
+    urss: 'URSS',
+    nazi: 'Allemagne nazie',
+    fasc: 'Italie fasciste',
+    crises: 'Crises 1936-1939',
+    meth: 'Méthode'
+  };
+
+  // Chaque question : la bonne réponse est toujours en premier dans o, l’ordre est mélangé à l’affichage.
+  var Q = [
+    // Caractéristiques communes
+    { c: 'commun', q: 'Quel est le but d’un régime totalitaire ?', o: ['Contrôler toute la société et créer un « homme nouveau »', 'Partager le pouvoir entre plusieurs partis', 'Limiter l’action de l’État à la défense et à la justice', 'Laisser la société s’organiser librement'], e: 'Le totalitarisme veut encadrer tous les aspects de la vie (travail, loisirs, jeunesse, pensée) pour façonner un homme nouveau.' },
+    { c: 'commun', q: 'Quel élément n’est PAS commun aux trois régimes totalitaires ?', o: ['Le pluralisme des partis politiques', 'Le culte de la personnalité', 'L’embrigadement de la jeunesse', 'La propagande généralisée'], e: 'Les trois régimes ont un chef unique, un parti unique, une dictature fondée sur la terreur, une propagande généralisée et l’embrigadement de la jeunesse.' },
+    { c: 'commun', q: 'Quels régimes sont des totalitarismes de droite, nationalistes ?', o: ['L’Allemagne nazie et l’Italie fasciste', 'L’URSS et l’Allemagne nazie', 'L’URSS et l’Italie fasciste', 'Les trois régimes'], e: 'L’URSS est un totalitarisme de gauche (égalité sociale complète, idéologie internationaliste). Nazisme et fascisme sont des totalitarismes de droite.' },
+    { c: 'commun', q: 'Quelle idéologie est internationaliste ?', o: ['Le communisme soviétique', 'Le nazisme', 'Le fascisme italien', 'Aucune des trois'], e: 'Le communisme soviétique est internationaliste. Nazisme et fascisme placent la race ou la nation au-dessus de tout.' },
+    { c: 'commun', q: 'Que signifie la volonté de créer un « homme nouveau » ?', o: ['Transformer les individus selon l’idéologie du régime', 'Favoriser l’immigration de nouveaux habitants', 'Rétablir les valeurs de l’Ancien Régime', 'Développer l’individualisme'], e: 'Le prolétaire dédié au communisme en URSS, l’Aryen guerrier en Allemagne, l’« Italien nouveau » en Italie.' },
+    { c: 'commun', q: 'Pourquoi un régime totalitaire encadre-t-il aussi les loisirs ?', o: ['Pour contrôler la société jusque dans la vie privée', 'Pour faire baisser le chômage', 'Pour développer le tourisme international', 'Pour réduire les dépenses de l’État'], e: 'Le KDF en Allemagne et l’OND (Dopolavoro) en Italie encadrent les loisirs : aucun espace n’échappe au régime.' },
+
+    // URSS
+    { c: 'urss', q: 'Depuis quelle année Staline dirige-t-il l’URSS comme chef unique ?', o: ['1927', '1917', '1933', '1939'], e: 'Staline est le chef unique depuis 1927.' },
+    { c: 'urss', q: 'Quel surnom est donné à Staline ?', o: ['Le « Vojd »', 'Le « Duce »', 'Le « Führer »', 'Le « Caudillo »'], e: 'Vojd est le surnom de Staline. Duce désigne Mussolini et Führer désigne Hitler.' },
+    { c: 'urss', q: 'Quel est le parti unique en URSS ?', o: ['Le PCUS', 'Le NSDAP', 'Le Parti national fasciste', 'Le SPD'], e: 'Le Parti communiste de l’Union soviétique (PCUS).' },
+    { c: 'urss', q: 'Comment la jeunesse soviétique est-elle embrigadée ?', o: ['Pionniers puis Komsomol, de 7 à 25 ans', 'Hitlerjugend, de 8 à 21 ans', 'Gioventù italiana del Littorio, de 6 à 21 ans', 'Jeunesses ouvrières, de 14 à 18 ans'], e: 'Pionniers puis Komsomol, de 7 à 25 ans.' },
+    { c: 'urss', q: 'Que désigne l’« Holodomor » ?', o: ['La famine organisée en Ukraine en 1933', 'La grande purge dans l’armée en 1937', 'La collectivisation des campagnes', 'Le premier plan quinquennal'], e: 'En 1933, une famine volontaire est organisée en Ukraine : l’Holodomor.' },
+    { c: 'urss', q: 'Quand a lieu la « Grande Terreur » en URSS ?', o: ['1937-1938', '1933', '1927-1929', '1941-1945'], e: 'La Grande Terreur se déroule en 1937-1938.' },
+    { c: 'urss', q: 'Que désigne le « goulag » ?', o: ['L’univers concentrationnaire soviétique', 'Le parti unique soviétique', 'La police politique italienne', 'Les fermes collectives'], e: 'Le goulag est l’univers concentrationnaire de l’URSS.' },
+    { c: 'urss', q: 'Que sont les kolkhozes et les sovkhozes ?', o: ['Des exploitations agricoles issues de la collectivisation des campagnes', 'Des usines d’armement', 'Des organisations de jeunesse', 'Des camps de travail'], e: 'Collectivisation des campagnes : kolkhozes et sovkhozes.' },
+    { c: 'urss', q: 'Comment l’économie soviétique est-elle organisée ?', o: ['Planification quinquennale, entreprises appartenant toutes à l’État', 'Économie de marché encadrée par les syndicats', 'Batailles économiques comme la « guerre du blé »', 'Interventionnisme de l’État pour préparer la guerre'], e: 'Planification quinquennale et entreprises toutes propriétés de l’État.' },
+    { c: 'urss', q: 'Quelle apparence garde le système politique soviétique ?', o: ['Celle d’un système démocratique, qui est une fiction', 'Celle d’une monarchie constitutionnelle', 'Celle d’une dictature militaire assumée', 'Celle d’un régime religieux'], e: 'Il existe une façade démocratique, mais un seul parti décide : c’est la fiction d’un système démocratique.' },
+    { c: 'urss', q: 'Que désigne le stakhanovisme ?', o: ['Le culte du travailleur modèle qui dépasse les normes de production', 'Un plan de collectivisation des terres', 'Une organisation de jeunesse', 'La police politique'], e: 'Stakhanov est présenté comme le travailleur modèle : le prolétaire dédié à l’édification du monde communiste.' },
+
+    // Allemagne nazie
+    { c: 'nazi', q: 'Quand Hitler devient-il chancelier ?', o: ['30 janvier 1933', '23 mars 1933', '19 août 1934', '9 novembre 1938'], e: '30 janvier 1933 : Hitler chancelier.' },
+    { c: 'nazi', q: 'Que se passe-t-il le 23 mars 1933 ?', o: ['Hitler obtient les pleins pouvoirs', 'Hitler devient chancelier', 'Hitler devient « Führer »', 'Hitler lance les lois de Nuremberg'], e: '23 mars 1933 : pleins pouvoirs.' },
+    { c: 'nazi', q: 'Quand Hitler devient-il « Führer » ?', o: ['19 août 1934', '30 janvier 1933', '7 mars 1936', '1er septembre 1939'], e: '19 août 1934 : Hitler devient Führer.' },
+    { c: 'nazi', q: 'Quel est le parti unique en Allemagne nazie ?', o: ['Le NSDAP', 'Le PCUS', 'Le Parti national fasciste', 'Le Zentrum'], e: 'Le NSDAP.' },
+    { c: 'nazi', q: 'Comment s’appelle l’organisation de jeunesse nazie, de 8 à 21 ans ?', o: ['Hitlerjugend', 'Komsomol', 'Gioventù italiana del Littorio', 'Dopolavoro'], e: 'Hitlerjugend, pour les 8-21 ans.' },
+    { c: 'nazi', q: 'Quelle organisation encadre les loisirs des Allemands ?', o: ['Le KDF', 'Le DAF', 'L’OND', 'La SS'], e: 'Le KDF encadre les loisirs. Le DAF encadre le monde du travail.' },
+    { c: 'nazi', q: 'Quelle organisation encadre le monde du travail en Allemagne nazie ?', o: ['Le DAF', 'Le KDF', 'L’OVRA', 'Le Komsomol'], e: 'Le DAF encadre le monde du travail.' },
+    { c: 'nazi', q: 'Qui dirige le ministère de la Propagande ?', o: ['Goebbels', 'Göring', 'Himmler', 'Mussolini'], e: 'Le ministère de la propagande est dirigé par Goebbels.' },
+    { c: 'nazi', q: 'Quel événement sportif sert la propagande nazie ?', o: ['Les Jeux olympiques de Berlin en 1936', 'Les Jeux olympiques de Paris en 1924', 'La Coupe du monde de 1934', 'Les Jeux olympiques de Moscou en 1980'], e: 'Utilisation du sport : JO de Berlin, 1936.' },
+    { c: 'nazi', q: 'Que sont les lois de Nuremberg, adoptées en septembre 1935 ?', o: ['Des lois antisémites', 'Des lois donnant les pleins pouvoirs à Hitler', 'Des lois de réarmement', 'Des lois sur la jeunesse'], e: 'Septembre 1935 : lois de Nuremberg, étape de la persécution antisémite.' },
+    { c: 'nazi', q: 'Que désigne le pogrom du 9 novembre 1938 ?', o: ['Une violente attaque contre les juifs dans toute l’Allemagne', 'Un putsch contre Hitler', 'L’annexion de l’Autriche', 'Un boycott des magasins'], e: '9 novembre 1938 : pogrom, une étape de la radicalisation de l’antisémitisme.' },
+    { c: 'nazi', q: 'Qui gère l’univers concentrationnaire nazi ?', o: ['La SS', 'Le DAF', 'Le KDF', 'La Hitlerjugend'], e: 'Un univers concentrationnaire géré par la SS.' },
+    { c: 'nazi', q: 'Sur quelle idéologie repose le nazisme ?', o: ['La domination de la race aryenne sur un espace vital', 'L’égalité sociale complète', 'La supériorité de la nation italienne', 'Le libéralisme économique'], e: 'Totalitarisme de droite : race aryenne et espace vital.' },
+    { c: 'nazi', q: 'Quelle est la logique de l’économie nazie ?', o: ['Un interventionnisme de l’État pour préparer la guerre', 'Une planification quinquennale avec entreprises d’État', 'Des « batailles économiques » comme la guerre du blé', 'Un libre marché sans intervention'], e: 'Interventionnisme économique de l’État pour préparer la guerre.' },
+    { c: 'nazi', q: 'Quelles mesures antisémites sont prises dès 1933 ?', o: ['Boycott des magasins et exclusion de la fonction publique', 'Lois de Nuremberg', 'Pogrom de novembre', 'Création des camps d’extermination'], e: 'En 1933 : boycott des magasins juifs et exclusion de la fonction publique.' },
+
+    // Italie fasciste
+    { c: 'fasc', q: 'Quel est le titre de Mussolini ?', o: ['Le « Duce »', 'Le « Führer »', 'Le « Vojd »', 'Le « Caudillo »'], e: 'Mussolini est le « Duce ».' },
+    { c: 'fasc', q: 'Quel est le parti unique en Italie ?', o: ['Le Parti national fasciste', 'Le NSDAP', 'Le PCUS', 'Le Parti populaire italien'], e: 'Le parti national fasciste.' },
+    { c: 'fasc', q: 'Quelles lois instaurent la dictature en Italie en 1925-1926 ?', o: ['Les lois « fascistissimes »', 'Les lois de Nuremberg', 'Les lois de Munich', 'Les lois de Versailles'], e: 'Les lois fascistissimes de 1925-1926, qui permettent aussi le contrôle de la presse.' },
+    { c: 'fasc', q: 'Quelle organisation encadre les loisirs en Italie ?', o: ['L’OND, le « Dopolavoro »', 'Le KDF', 'Le DAF', 'L’OVRA'], e: 'Loisirs encadrés par l’OND (Dopolavoro).' },
+    { c: 'fasc', q: 'De quel âge à quel âge la jeunesse italienne est-elle embrigadée ?', o: ['De 6 à 21 ans', 'De 8 à 21 ans', 'De 7 à 25 ans', 'De 10 à 14 ans'], e: 'Gioventù italiana del Littorio : 6 à 21 ans. Hitlerjugend : 8 à 21 ans. Pionniers puis Komsomol : 7 à 25 ans.' },
+    { c: 'fasc', q: 'Que désigne la « guerre du blé » ?', o: ['Une « bataille économique » menée par le régime', 'Une guerre contre l’Éthiopie', 'La famine en Ukraine', 'Un plan de collectivisation'], e: 'Batailles économiques : guerre du blé et grands travaux.' },
+    { c: 'fasc', q: 'Qu’est-ce que l’OVRA ?', o: ['La police politique fasciste', 'L’organisation de jeunesse', 'Le ministère de la Propagande', 'Le syndicat du régime'], e: 'L’OVRA est la police politique italienne.' },
+    { c: 'fasc', q: 'Que dit ton cours sur les camps de concentration en Italie ?', o: ['Il n’y en a pas', 'Ils sont gérés par la SS', 'Ils forment le goulag', 'Ils sont créés dès 1922 à grande échelle'], e: 'Pas de camps de concentration : l’une des limites au totalitarisme fasciste.' },
+    { c: 'fasc', q: 'À partir de quand l’Italie adopte-t-elle des lois antisémites ?', o: ['1938', '1922', '1925', '1933'], e: 'À partir de 1938. En Allemagne, l’antisémitisme est constant dès 1933.' },
+    { c: 'fasc', q: 'Pourquoi le fascisme est-il un totalitarisme « mou » ?', o: ['Le régime rencontre des limites : le roi, l’Église, les identités régionales', 'Il n’a pas de parti unique', 'Il n’a pas de chef', 'Il laisse l’opposition gouverner'], e: 'Le fascisme a les outils du totalitarisme mais n’arrive pas à contrôler toute la société.' },
+    { c: 'fasc', q: 'Laquelle n’est PAS une limite au totalitarisme fasciste ?', o: ['Une opposition légale au Parlement', 'Le roi, autre légitimité politique', 'L’Église catholique, contrepoids culturel et idéologique', 'Les identités régionales'], e: 'Les limites sont le roi, l’Église et les identités régionales. Il n’y a pas d’opposition légale.' },
+    { c: 'fasc', q: 'Que dit ton schéma sur la vision de l’humanité du fascisme ?', o: ['Il ne définit pas en réalité une nouvelle vision de l’humanité', 'Il crée une race pure', 'Il vise l’égalité sociale complète', 'Il supprime la nation'], e: 'Contrairement à l’homme nouveau soviétique ou à la race aryenne, l’« Italien nouveau » reste flou.' },
+
+    // Crises 1936-1939
+    { c: 'crises', q: 'Que prévoit le plan de quatre ans lancé en 1936 ?', o: ['Préparer l’économie allemande à soutenir une guerre dans 4 ans', 'Annexer l’Autriche en 4 ans', 'Créer le pacte germano-soviétique', 'Occuper la Rhénanie'], e: 'C’est un plan secret : l’économie doit être prête à la guerre.' },
+    { c: 'crises', q: 'Que se passe-t-il le 7 mars 1936 ?', o: ['Remilitarisation de la Rhénanie', 'Anschluss', 'Accords de Munich', 'Invasion de la Pologne'], e: 'Violation du traité de Versailles. L’objectif est de se protéger de la France et de flatter le nationalisme intérieur.' },
+    { c: 'crises', q: 'Quelle est la réaction de la SDN face à la Rhénanie ?', o: ['Elle proteste', 'Elle déclare la guerre', 'Elle envoie une armée', 'Elle approuve'], e: 'La SDN proteste, sans autre action.' },
+    { c: 'crises', q: 'Quand débute la guerre civile espagnole ?', o: ['18 juillet 1936', '7 mars 1936', '14 mars 1938', '30 septembre 1938'], e: '18 juillet 1936.' },
+    { c: 'crises', q: 'Quelle est la réaction de la France et du Royaume-Uni face à la guerre d’Espagne ?', o: ['Ils déclarent un embargo sur les armes (non-intervention)', 'Ils soutiennent Franco', 'Ils envoient leurs armées', 'Ils annexent l’Espagne'], e: 'Embargo sur les armes : non-intervention.' },
+    { c: 'crises', q: 'Comment se termine la guerre civile espagnole ?', o: ['Victoire des nationalistes en 1939, Franco établit une dictature', 'Victoire des républicains', 'Annexion de l’Espagne par l’Allemagne', 'Intervention de la SDN'], e: 'Résolution en 1939 : victoire de Franco et dictature.' },
+    { c: 'crises', q: 'Que se passe-t-il le 14 mars 1938 ?', o: ['L’Allemagne annexe l’Autriche (Anschluss)', 'L’Allemagne annexe les Sudètes', 'L’Allemagne attaque la Pologne', 'L’Allemagne remilitarise la Rhénanie'], e: 'Anschluss : annexion d’un territoire, unification du territoire.' },
+    { c: 'crises', q: 'Quelle est la résolution de l’Anschluss ?', o: ['Des référendums avec 99 % d’approbation, début du Grand Reich', 'Une guerre contre la France', 'Un traité signé à Munich', 'Une intervention de la SDN'], e: 'Référendums à 99 % d’approbation dans les deux populations : début du Grand Reich.' },
+    { c: 'crises', q: 'Pourquoi l’Allemagne veut-elle les Sudètes ?', o: ['Territoire germanophone, région industrielle et minière de Tchécoslovaquie', 'Elle veut un accès à la mer', 'Elle veut se rapprocher de l’URSS', 'Elle veut récupérer la Rhénanie'], e: 'Population et territoire germaniques, région industrielle et minière.' },
+    { c: 'crises', q: 'Qui est absent de la conférence de Munich (30 septembre 1938) ?', o: ['La Tchécoslovaquie', 'La France', 'Le Royaume-Uni', 'L’Italie'], e: 'La conférence est réunie à l’initiative de l’Italie. La Tchécoslovaquie, pourtant concernée, n’est pas invitée.' },
+    { c: 'crises', q: 'Quel est le résultat des accords de Munich ?', o: ['Annexion des Sudètes, la France et le Royaume-Uni abandonnent la Tchécoslovaquie', 'La guerre est déclarée à l’Allemagne', 'L’Allemagne rend les Sudètes', 'La Tchécoslovaquie est défendue par la France'], e: 'Non-respect de l’alliance avec la Tchécoslovaquie : c’est la politique d’apaisement.' },
+    { c: 'crises', q: 'Que se passe-t-il le 15 mars 1939 ?', o: ['La Tchécoslovaquie disparaît, le Grand Reich s’étend', 'L’Allemagne attaque la Pologne', 'Le pacte germano-soviétique est signé', 'La France déclare la guerre'], e: 'L’Allemagne met la main sur tout le potentiel industriel de la Tchécoslovaquie. La France et le Royaume-Uni trahissent encore.' },
+    { c: 'crises', q: 'Pourquoi Hitler signe-t-il le pacte germano-soviétique (23 août 1939) ?', o: ['Pour éviter une guerre sur deux fronts', 'Pour attaquer l’URSS plus facilement', 'Pour s’allier à la France', 'Pour récupérer les Sudètes'], e: 'Il empêche aussi une alliance de l’URSS avec la France et le Royaume-Uni.' },
+    { c: 'crises', q: 'Que cherche Staline en signant le pacte germano-soviétique ?', o: ['Retarder la guerre avec l’Allemagne', 'Annexer l’Autriche', 'Soutenir Franco', 'Entrer dans la SDN'], e: 'L’URSS retarde la guerre avec l’Allemagne.' },
+    { c: 'crises', q: 'Que vise l’Allemagne en attaquant la Pologne le 1er septembre 1939 ?', o: ['Rattacher la Prusse orientale et récupérer le corridor de Dantzig', 'Occuper la Rhénanie', 'Annexer l’Autriche', 'Récupérer les Sudètes'], e: 'Poursuite de l’extension du Reich.' },
+    { c: 'crises', q: 'Que font la France et le Royaume-Uni le 3 septembre 1939 ?', o: ['Ils déclarent la guerre à l’Allemagne', 'Ils signent un pacte avec l’Allemagne', 'Ils convoquent une conférence de paix', 'Ils décrètent un embargo'], e: 'La Pologne est liée à la France et au Royaume-Uni : c’est le début de la Seconde Guerre mondiale.' },
+    { c: 'crises', q: 'Quel événement est le plus ancien ?', o: ['La remilitarisation de la Rhénanie', 'L’Anschluss', 'Les accords de Munich', 'Le pacte germano-soviétique'], e: 'Ordre : Rhénanie (mars 1936), Espagne (juillet 1936), Anschluss (mars 1938), Munich (septembre 1938), Prague (mars 1939), pacte (août 1939), Pologne (septembre 1939).' },
+    { c: 'crises', q: 'Quelle période correspond à la « marche à la guerre » ?', o: ['1938-1939', '1936-1938', '1933-1935', '1919-1923'], e: '1936-1938 : structuration des oppositions européennes. 1938-1939 : marche à la guerre.' },
+    { c: 'crises', q: 'Quelle est l’attitude des démocraties face aux crises avant septembre 1939 ?', o: ['Elles reculent, c’est l’apaisement', 'Elles interviennent militairement', 'Elles forment un front uni avec l’URSS', 'Elles quittent l’Europe'], e: 'À chaque crise, Hitler teste les démocraties qui reculent. La SDN reste impuissante.' },
+
+    // Méthode
+    { c: 'meth', q: 'Par quoi commence un commentaire de document ?', o: ['Par la présentation du document (nature, auteur, date, contexte, thème)', 'Par la conclusion', 'Par la recopie du texte', 'Par une liste de dates'], e: 'Présenter le document, dégager l’idée générale, analyser, puis conclure.' },
+    { c: 'meth', q: 'Que faut-il faire dans l’analyse du document ?', o: ['S’appuyer sur le texte et sur ses connaissances précises (dates, exemples)', 'Résumer le texte sans rien ajouter', 'Donner son opinion personnelle sur le régime', 'Réciter tout le cours'], e: 'On cite ou paraphrase le texte, et on le justifie avec le cours.' },
+    { c: 'meth', q: 'Que faut-il dégager après la présentation du document ?', o: ['L’idée générale du document', 'Un avis personnel', 'Une liste de citations', 'La biographie de tous les dirigeants'], e: 'L’idée générale dit ce que le document démontre, avant l’analyse détaillée.' }
+  ];
+
+  var app = document.getElementById('app');
+  var screen = 'setup';
+  var sel = {};
+  Object.keys(CATS).forEach(function (k) { sel[k] = true; });
+  var count = '20';
+  var run = null;
+
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  function selected() { return Q.filter(function (q) { return sel[q.c]; }); }
+  function plural(n, w) { return n + ' ' + w + (n > 1 ? 's' : ''); }
+  function top() { try { window.scrollTo(0, 0); } catch (e) {} }
+
+  function renderSetup() {
+    screen = 'setup';
+    var chips = Object.keys(CATS).map(function (k) {
+      var nb = Q.filter(function (q) { return q.c === k; }).length;
+      return '<label class="chip"><input type="checkbox" name="cat" id="cat-' + k + '" value="' + k + '"' + (sel[k] ? ' checked' : '') + '><span>' + CATS[k] + ' <small>' + nb + '</small></span></label>';
+    }).join('');
+    var counts = [['10', '10'], ['20', '20'], ['all', 'Toutes']].map(function (p) {
+      return '<label class="chip"><input type="radio" name="n" id="n-' + p[0] + '" value="' + p[0] + '"' + (count === p[0] ? ' checked' : '') + '><span>' + p[1] + '</span></label>';
+    }).join('');
+    app.innerHTML =
+      '<div class="stack">' +
+      '<header class="hero"><p class="eyebrow">DS d’histoire · Terminale</p><h1>Les totalitarismes</h1>' +
+      '<p class="lead">Les questions sont mélangées à chaque tirage. Tout se passe dans cette page : tu peux recommencer autant de fois que tu veux, sans repasser par la conversation.</p></header>' +
+      '<ol class="tl" aria-label="Repères chronologiques">' +
+      '<li><b>1933</b><span>Hitler chancelier</span></li>' +
+      '<li><b>1935</b><span>Lois de Nuremberg</span></li>' +
+      '<li><b>1936</b><span>Rhénanie, Espagne</span></li>' +
+      '<li><b>1938</b><span>Anschluss, Munich</span></li>' +
+      '<li><b>1939</b><span>Pologne, 3 septembre</span></li></ol>' +
+      '<section class="panel">' +
+      '<div class="group"><span class="label">Thèmes</span><div class="chips">' + chips + '</div></div>' +
+      '<div class="group"><span class="label">Nombre de questions</span><div class="chips">' + counts + '</div></div>' +
+      '<button class="primary" id="go" data-act="go"></button></section></div>';
+    updateStart();
+    top();
+  }
+
+  function updateStart() {
+    var b = document.getElementById('go');
+    if (!b) return;
+    var avail = selected().length;
+    var n = count === 'all' ? avail : Math.min(avail, parseInt(count, 10));
+    b.disabled = n === 0;
+    b.textContent = n === 0 ? 'Choisis au moins un thème' : 'Commencer (' + plural(n, 'question') + ')';
+  }
+
+  function buildPool() {
+    var pool = shuffle(selected());
+    if (count !== 'all') pool = pool.slice(0, parseInt(count, 10));
+    return pool;
+  }
+
+  function start(list) {
+    var pool = shuffle(list.slice());
+    run = {
+      qs: pool.map(function (q) {
+        return { c: q.c, q: q.q, o: q.o, e: q.e, opts: shuffle(q.o.map(function (t, i) { return { t: t, ok: i === 0 }; })) };
+      }),
+      i: 0, score: 0, wrong: [], picked: null
+    };
+    renderQ();
+  }
+
+  function renderQ() {
+    screen = 'q';
+    var q = run.qs[run.i];
+    var n = run.qs.length;
+    run.picked = null;
+    app.innerHTML =
+      '<div class="top"><button class="link" data-act="menu">← Menu</button><span>Question ' + (run.i + 1) + ' sur ' + n + '</span><span id="sc">Score ' + run.score + '</span></div>' +
+      '<div class="bar"><span style="width:' + (run.i / n * 100) + '%"></span></div>' +
+      '<section class="card"><p class="tag">' + CATS[q.c] + '</p><h2 id="qt">' + q.q + '</h2>' +
+      '<div class="opts" role="group" aria-labelledby="qt">' +
+      q.opts.map(function (o, k) {
+        return '<button class="opt" data-k="' + k + '"><span class="key">' + (k + 1) + '</span><span class="txt">' + o.t + '</span></button>';
+      }).join('') +
+      '</div><div id="fb" class="fb" hidden aria-live="polite"></div></section>';
+    top();
+  }
+
+  function pick(k) {
+    if (run.picked !== null) return;
+    var q = run.qs[run.i];
+    var ok = q.opts[k].ok;
+    run.picked = k;
+    if (ok) run.score++; else run.wrong.push(q);
+    var btns = app.querySelectorAll('.opt');
+    for (var i = 0; i < btns.length; i++) {
+      var b = btns[i];
+      b.disabled = true;
+      var txt = b.querySelector('.txt');
+      if (q.opts[i].ok) {
+        b.classList.add('good');
+        txt.insertAdjacentHTML('beforeend', '<span class="mark">Bonne réponse</span>');
+      } else if (i === k) {
+        b.classList.add('bad');
+        txt.insertAdjacentHTML('beforeend', '<span class="mark">Ton choix</span>');
+      } else {
+        b.classList.add('dim');
+      }
+    }
+    document.getElementById('sc').textContent = 'Score ' + run.score;
+    var last = run.i === run.qs.length - 1;
+    var fb = document.getElementById('fb');
+    fb.hidden = false;
+    fb.innerHTML = '<p class="verdict ' + (ok ? 'good' : 'bad') + '">' + (ok ? 'Correct.' : 'Incorrect.') + '</p><p>' + q.e + '</p>' +
+      '<button class="primary" id="nx" data-act="next">' + (last ? 'Voir le résultat' : 'Question suivante') + '</button>';
+    document.getElementById('nx').focus();
+  }
+
+  function next() {
+    if (run.i < run.qs.length - 1) { run.i++; renderQ(); } else { renderEnd(); }
+  }
+
+  function renderEnd() {
+    screen = 'end';
+    var n = run.qs.length, s = run.score, pct = Math.round(s / n * 100);
+    var msg = pct >= 90 ? 'Très solide.' : pct >= 70 ? 'Bien, il reste quelques points à revoir.' : pct >= 50 ? 'Moyen. Repasse sur les erreurs ci-dessous.' : 'À retravailler. Refais les erreurs, puis un nouveau tirage.';
+    var errs = run.wrong.length ?
+      '<h2>À revoir (' + run.wrong.length + ')</h2><ul class="errors">' + run.wrong.map(function (q) {
+        return '<li><span class="q">' + q.q + '</span><span class="a">' + q.o[0] + '</span><span class="e">' + q.e + '</span></li>';
+      }).join('') + '</ul>' : '<p class="lead">Aucune erreur sur ce tirage.</p>';
+    app.innerHTML =
+      '<div class="stack"><header class="hero"><p class="eyebrow">Résultat</p>' +
+      '<p class="big">' + s + '<small> / ' + n + '</small></p><p class="lead">' + msg + '</p></header>' +
+      '<div class="actions">' +
+      (run.wrong.length ? '<button class="primary" data-act="redo">Refaire les erreurs</button>' : '') +
+      '<button class="' + (run.wrong.length ? 'secondary' : 'primary') + '" data-act="again">Nouveau tirage</button>' +
+      '<button class="secondary" data-act="menu">Menu</button></div>' + errs + '</div>';
+    top();
+  }
+
+  app.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.name === 'cat') { sel[t.value] = t.checked; updateStart(); }
+    else if (t.name === 'n') { count = t.value; updateStart(); }
+  });
+
+  app.addEventListener('click', function (e) {
+    var el = e.target.closest('[data-act],[data-k]');
+    if (!el || el.disabled) return;
+    if (el.hasAttribute('data-k')) { pick(parseInt(el.getAttribute('data-k'), 10)); return; }
+    var act = el.getAttribute('data-act');
+    if (act === 'go') start(buildPool());
+    else if (act === 'next') next();
+    else if (act === 'menu') renderSetup();
+    else if (act === 'redo') start(run.wrong);
+    else if (act === 'again') start(buildPool());
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (screen !== 'q' || run.picked !== null) return;
+    var k = parseInt(e.key, 10);
+    if (k >= 1 && k <= run.qs[run.i].opts.length) pick(k - 1);
+  });
+
+  renderSetup();
+})();
+</script>
+
+</html>
